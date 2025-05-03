@@ -1,0 +1,46 @@
+name: CI/CD Avanzado
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check-inventario:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+      - name: Mostrar inventario
+        run: cat inventario.csv
+  lint:
+    runs-on: windows-latest
+    needs: check-inventario
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+      - name: Simular revisión de formato
+        run: echo "Revisión de formato completada"
+
+  test:
+    runs-on: windows-latest
+    needs: lint
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+      - name: Simular pruebas automáticas
+        run: |
+          echo "Ejecutando pruebas..."
+          echo "Pruebas completadas con éxito"
+
+  deploy:
+    runs-on: windows-latest
+    needs: test
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+      - name: Despliegue simulado
+        run: |
+          echo "Desplegando a producción..."
+          # Aquí se podrían poner comandos de despliegue reales
